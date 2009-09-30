@@ -37,7 +37,7 @@ Simple class definition:
     item.run_test();              //=> "METHOD CALLED: Item:1234-123456789:run_test"
     item.is_a(Item);              //=> true
     item.class();                 //=> [Item function]
-    item.class().thing();         //=> "METHOD CALLED: JarbClass:1234-123456789:thing"
+    item.class().thing();         //=> "METHOD CALLED: Item:thing"
 
 
 Class inclusion:
@@ -68,7 +68,7 @@ Other expressions of inclusion:
 
 
 Embedding classes or namespacing:
-    $class("Resource". function(){
+    $class("Resource", function(){
     
       $class("ResultSet", function(){
         
