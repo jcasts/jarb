@@ -5,48 +5,45 @@
 == Description
 
 An attempt at creating a Ruby-like javascript class structure. Supports the following features:
- - Class reopening
- - Embedding classes / Namespacing
- - Inheritance
- - Class inclusion and object extending
- - Public, protected, and private method definition.
+* Class reopening
+* Embedding classes / Namespacing
+* Inheritance
+* Class inclusion and object extending
+* Public, protected, and private method definition.
 
 == Examples
     
-    
+First, let's define the following:
     var debug_method = 'console.log("METHOD CALLED: "+(this.name || this.id)+":"+arguments.callee.name)';
-    
+
+Simple class definition:
     $class("Item", function(){
       this.def("thing", new Function(debug_method));
-  
-      def("something_else", new Function(debug_method));
+      
+      def("initialize", function(name){
+        this.name = name;
+      });
+      
+      def("run_test", new Function(debug_method));
     });
     
-    item = Item.new()
-    item.something_else();  //=> "METHOD CALLED: Item:1234-123456789:something_else"
-    item.is_a(Item);        //=> true
-    item.class();           //=> [Item object]
-    item.class().thing();   //=> "METHOD CALLED: JarbClass:1234-123456789:thing"
+    item = Item.new("test name");
+    item.id;                      //=> "Item:1234-123456789:run_test"
+    item.name;                    //=> "test name"
+    item.run_test();              //=> "METHOD CALLED: Item:1234-123456789:run_test"
+    item.is_a(Item);              //=> true
+    item.class();                 //=> [Item function]
+    item.class().thing();         //=> "METHOD CALLED: JarbClass:1234-123456789:thing"
 
 
-
-
+Class inclusion:
     $class("Resource", function(){
     
       $include(Item);
       
-      this.def("find", new Function(debug_method));
-      
-      
-      def("initialize", function(){
-        if(arguments.length > 0) console.log("Arguments: "+Array.prototype.slice.call(arguments));
-      });
-      
-      
       def("test", function(){
         this.run_test();
       });
-      
       
       $private();
       
@@ -54,28 +51,39 @@ An attempt at creating a Ruby-like javascript class structure. Supports the foll
     
     });
     
+    r = Resource.new();
+    r.test();             //=> "METHOD CALLED: Resource:1234-123456789:run_test"
+    r.private_method()    //=> Attempted to call private method 'private_method' from [window]
+    
+    
+Other expressions of inclusion:
+    Resource.include(Item);           // Equivalent to calling $include(Item) in the class definition
+    Resource.prototype.extend(Item);  // Equivalent to Resource.include(Item)
+    Resource.new().extend(Item);      // Will extend only the unique Resource instance
 
 
-
+Embedding classes or namespacing:
     $class("Resource". function(){
     
       $class("ResultSet", function(){
-  
+        
         this.def("listings", new Function(debug_method));
-  
+        
         $private();
-  
+        
         this.def("class_private", new Function(debug_method));
-  
+        
         def("test_private", new Function(debug_method));
-  
+        
       });
       
     });
     
+    ResultSet;            //=> ReferenceError: ResultSet is not defined
+    Resource.ResultSet;   //=> [ResultSet function]
 
 
-
+Class inheritance and the super() method:
     $class("Business"['<'](Resource), function(){
   
       this.def("find", function(){
@@ -85,6 +93,7 @@ An attempt at creating a Ruby-like javascript class structure. Supports the foll
   
       def("run_test", function(){
         console.log("ran tests from Business");
+        this.super();
       });
   
       def("test", function(){
@@ -93,12 +102,11 @@ An attempt at creating a Ruby-like javascript class structure. Supports the foll
       });
   
     });
+    
+    b = Business.new();
+    b.test();             //=> "test from Business"
+                          //=> "ran tests from Business"
+                          //=> "METHOD CALLED: Business:1234-123456789:run_test"
 
-
-    $class("Resource", function(){
-  
-      def("run_test", function(){
-        console.log("ran tests from Resource");
-      });
-  
-    });
+Note: the super() method can take explicit arguments as well.
+    
