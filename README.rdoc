@@ -31,7 +31,7 @@ Simple class definition:
     });
     
     item = Item.new("test name");
-    item.id;                      //=> "Item:1234-123456789:run_test"
+    item.id;                      //=> "Item:1234-123456789"
     item.name;                    //=> "test name"
     item.run_test();              //=> "METHOD CALLED: Item:1234-123456789:run_test"
     item.is_a(Item);              //=> true
@@ -55,8 +55,9 @@ Class inclusion:
     });
     
     r = Resource.new();
-    r.test();             //=> "METHOD CALLED: Resource:1234-123456789:run_test"
-    r.private_method()    //=> Attempted to call private method 'private_method' from [window]
+    r.test();                 //=> "METHOD CALLED: Resource:1234-123456789:run_test"
+    r.private_method()        //=> Attempted to call private method 'private_method' from [window]
+    r.send("private_method"); //=> "METHOD CALLED: Resource:1234-123456789:private_method"
     
     
 Other expressions of inclusion:
