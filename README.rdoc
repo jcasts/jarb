@@ -21,42 +21,59 @@ An attempt at creating a Ruby-like javascript class structure. Supports the foll
   
       def("something_else", new Function(debug_method));
     });
+    
+    item = Item.new()
+    item.something_else();  //=> "METHOD CALLED: Item:1234-123456789:something_else"
+    item.is_a(Item);        //=> true
+    item.class();           //=> [Item object]
+    item.class().thing();   //=> "METHOD CALLED: JarbClass:1234-123456789:thing"
+
+
 
 
     $class("Resource", function(){
-  
+    
       $include(Item);
-  
-      $class("ResultSet", function(){
-    
-        this.def("listings", new Function(debug_method));
-    
-        $private();
-    
-        this.def("class_private", new Function(debug_method));
-    
-        def("test_private", new Function(debug_method));
-    
-      });
-  
+      
       this.def("find", new Function(debug_method));
-  
-  
+      
+      
       def("initialize", function(){
         if(arguments.length > 0) console.log("Arguments: "+Array.prototype.slice.call(arguments));
       });
-  
-  
+      
+      
       def("test", function(){
         this.run_test();
       });
-  
-  
+      
+      
       $private();
-  
-      def("priv_method",  new Function(debug_method));
-  
+      
+      def("private_method",  new Function(debug_method));
+    
     });
+    
+
+
+
+    $class("Resource". function(){
+    
+      $class("ResultSet", function(){
+  
+        this.def("listings", new Function(debug_method));
+  
+        $private();
+  
+        this.def("class_private", new Function(debug_method));
+  
+        def("test_private", new Function(debug_method));
+  
+      });
+      
+    });
+    
+
 
 
     $class("Business"['<'](Resource), function(){
