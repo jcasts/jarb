@@ -115,4 +115,44 @@ Class inheritance and the super() method:
                             //=> "METHOD CALLED: Business:1234-123456789:run_test"
 
 Note: the super() method can take explicit arguments as well.
+
+== More Info
+
+All classes and instances inherit from JarbClass (including JarbClass). JarbClass itself is constructed by the $class object.
+
+Because of this, Jarb classes can be constructed as follows:
+
+    JarbClass.new("Resource", function(){
+      // Class definitions goes here
+    });
+    
+    JarbClass.new("Business"['<'](Resource), function(){
+      // Class definitions goes here
+    });
+    
+    JarbClass.new("Item"); // Will return a generic empty class when no class definition is provided
+    
+Jarb classes and instances support dynamically adding method definitions, which get propagated to child objects:
+
+    Resource.add_method("new_method", function(){
+      return "this is a new method";
+    });
+    
+    Resource.add_instance_method("new_inst_method", function(){
+      return "this is a new instance method";
+    });
+    
+    Business.new_method();              //=> "this is a new method"
+    b = Business.new();
+    b.new_instance_method();            //=> "this is a new instance method"
+    
+    b.add_method("added_method", function(){
+      return "this is a new method on a single instance";
+    });
+    
+    b.added_method();                   //=> "this is a new method on a single instance"
+    Business.new().added_method();      //=> TypeError: Business.new().added_method is not a function
+    
+    
+Please play around with it. Send any bug reports to yaksnrainbows@gmail.com.
     
