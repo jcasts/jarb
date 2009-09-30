@@ -20,8 +20,11 @@ Simple class definition:
     $class("Item", function(){
       this.def("thing", new Function(debug_method));
       
+      $a.this_is_an_instance_attribute;
+      
       def("initialize", function(name){
         this.name = name;
+        this.this_is_an_instance_attribute = "something";
       });
       
       def("run_test", new Function(debug_method));
@@ -103,10 +106,11 @@ Class inheritance and the super() method:
   
     });
     
+    Business.superclass();  //=> [Resource function]
     b = Business.new();
-    b.test();             //=> "test from Business"
-                          //=> "ran tests from Business"
-                          //=> "METHOD CALLED: Business:1234-123456789:run_test"
+    b.test();               //=> "test from Business"
+                            //=> "ran tests from Business"
+                            //=> "METHOD CALLED: Business:1234-123456789:run_test"
 
 Note: the super() method can take explicit arguments as well.
     
