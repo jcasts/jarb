@@ -1,11 +1,10 @@
 
 // Define global variables in case they are undefined
-var JarbClass, $a, $public, $private, $protected, $include, $parent_class, def;
+var JarbClass, $a, $public, $private, $protected, $include, def;
 
-String.prototype.extends = String.prototype['<'] = function(parent){$parent_class = parent; return this}
-
-$class = function(name, fn, context){
-  
+$class = function(name_def, fn, context){
+  name = name_def.toString();
+    
   if(!context) context = arguments.callee.caller || window;
   if(context._definee) context = context._definee;
   
@@ -13,7 +12,7 @@ $class = function(name, fn, context){
   if(context[name]){ // When reopening class
     new_class = context[name];
   } else if(window.JarbClass) { // When defining a first time JarbClass
-    return JarbClass.new(name, fn, context);
+    return JarbClass.new(name_def, fn, context);
   } else { // When defining JarbClass itself
     new_class = new Function();
   }
@@ -32,7 +31,7 @@ $class._debug = true;
 
 
 $class.initialize_class = function(new_class, fn){
-  $class.stash_global_values("$a", "$public", "$private", "$protected", "$include", "def", "$class._access", "$parent_class");
+  $class.stash_global_values("$a", "$public", "$private", "$protected", "$include", "def", "$class._access");
   
   $class._access = "public";
   $a = new_class.prototype;
@@ -152,6 +151,19 @@ $class.make_id = function(prepend){
   return prepend+":"+(Math.floor(Math.random() * (max - min + 1)) + min) + "-" + (new Date()).getTime();
 }
 
+$class.inheritance_def = function(name, parent){
+  this.parent = parent;
+  this.name = name;
+  this.toString = function(){
+    return this.name;
+  }
+}
+
+String.prototype.extends = String.prototype['<'] = function(parent){
+  return (new $class.inheritance_def(this, parent));
+}//{$parent_class = parent; return this}
+
+
 $class("JarbClass", function(){
   
   // Class variable definitions:
@@ -192,13 +204,14 @@ $class("JarbClass", function(){
   });
   
   this.def("new", function(name, fn, context){
+    var parent_class = name.parent || this;
     name = name.toString();
     
     if(!context) context = arguments.callee.caller || window;
     if(!context[name]) context[name] = new Function();
     if(!fn) fn = new Function();
     
-    ($parent_class || this).make_parent_of(context[name]);
+    parent_class.make_parent_of(context[name]);
     
     context[name].id = $class.make_id(this.id);
     context[name].prototype._class = context[name];
