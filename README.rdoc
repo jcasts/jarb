@@ -4,12 +4,13 @@
 
 == Description
 
-An attempt at creating a Ruby-like javascript class structure. Supports the following features:
+A study of Ruby through an attempt at creating a Ruby-like javascript class structure. Supports the following features:
 * Class reopening
 * Embedding classes / Namespacing
 * Inheritance
 * Class inclusion and object extending
 * Public, protected, and private method definition.
+* Dynamic method lookup.
 
 == Examples
     
