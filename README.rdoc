@@ -144,7 +144,7 @@ Jarb classes and instances support dynamically adding method definitions, which 
     
     Business.new_method();              //=> "this is a new method"
     b = Business.new();
-    b.new_instance_method();            //=> "this is a new instance method"
+    b.new_inst_method();                //=> "this is a new instance method"
     
     b.add_method("added_method", function(){
       return "this is a new method on a single instance";
@@ -152,7 +152,11 @@ Jarb classes and instances support dynamically adding method definitions, which 
     
     b.added_method();                   //=> "this is a new method on a single instance"
     Business.new().added_method();      //=> TypeError: Business.new().added_method is not a function
-    
+
+JarbClass objects have quite a few more features. You can discover them by looking at the standard JarbClass methods:
+
+    JarbClass.methods();
+    JarbClass.instance_methods();
     
 Please play around with it. Send any bug reports to yaksnrainbows@gmail.com.
     
