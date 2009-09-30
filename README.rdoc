@@ -114,7 +114,7 @@ Class inheritance and the super() method:
                             //=> "ran tests from Business"
                             //=> "METHOD CALLED: Business:1234-123456789:run_test"
 
-Note: the super() method can take explicit arguments as well.
+Note: The super() method can also take explicit arguments, and will respect includes as well.
 
 == More Info
 
