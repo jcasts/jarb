@@ -9,7 +9,7 @@ A study of Ruby through an attempt at creating a Ruby-like javascript class stru
 * Embedding classes / Namespacing
 * Inheritance
 * Class inclusion and object extending
-* Public, protected, and private method definition.
+* Public and private method definition.
 * Dynamic method lookup.
 
 == Examples
